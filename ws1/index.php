@@ -1,4 +1,7 @@
 <?php
+/*mb_internal_encoding("UTF-8");
+
+var_dump(apache_get_version());*/
 
 /**
  * Step 1: Require the Slim Framework using Composer's autoloader
@@ -92,3 +95,5 @@ $app->delete('/usuario/{id}', function ($request, $response, $args) {
  * and returns the HTTP response to the HTTP client.
  */
 $app->run();
+
+?>

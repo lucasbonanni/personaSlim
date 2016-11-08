@@ -1,5 +1,5 @@
 <?php
-require_once"accesoDatos.php";
+require_once "AccesoDatos.php";
 class Persona
 {
 //--------------------------------------------------------------------------------//
