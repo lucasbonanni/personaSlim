@@ -12,6 +12,7 @@ var_dump(apache_get_version());*/
 require 'vendor/autoload.php';
 require 'clases/AccesoDatos.php';
 require 'clases/Personas.php';
+use \Firebase\JWT\JWT;
 
 /**
  * Step 2: Instantiate a Slim application
@@ -42,6 +43,43 @@ $app = new Slim\App();
 $app->get('/', function ($request, $response, $args) {
     $response->write("Welcome to Slim!");
     return $response;
+});
+
+/* POST: Para crear recursos */
+$app->post('/login', function ($request, $response, $args) {
+    $token = array();
+
+    $body = $request->getBody();
+     
+    $usuario = json_decode($body);
+    
+    //Se va a buscar a la base el usuario
+    $exist = false;
+
+    if($exist){
+
+        $ClaveDeEncriptacion = "miClaveDeEncriptacion";
+        $token["usuario"] = "usuario";
+        $token["perfil"] = "admin";
+        $token["iat"] = time();
+        $token["exp"] = time() +20;
+
+
+        $jwt = JWT::encode($token, $ClaveDeEncriptacion);
+
+        
+        $ArrayConToken["MiTokenGeneradoEnPHP"] = $jwt;
+    }
+    else
+    {
+        $ArrayConToken["MiTokenGeneradoEnPHP"] = false;
+    }
+
+    //de decodifca del array al json
+    $response = json_encode($ArrayConToken);
+
+    //return $response;
+    echo 'asdfadf';
 });
 
 $app->get('/usuarios[/]', function ($request, $response, $args) {
