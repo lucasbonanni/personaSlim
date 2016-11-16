@@ -9,6 +9,9 @@ class Persona
  	public $apellido;
   	public $dni;
   	public $foto;
+  	public $mail;
+  	public $clave;
+  	public $perfil;
 
 //--------------------------------------------------------------------------------//
 
@@ -35,6 +38,21 @@ class Persona
 		return $this->foto;
 	}
 
+	public function GetMail()
+	{
+		return $this->mail;
+	}
+
+	public function GetClave()
+	{
+		return $this->clave;
+	}
+
+	public function GetPerfil()
+	{
+		return $this->perfil;
+	}
+
 	public function SetId($valor)
 	{
 		$this->id = $valor;
@@ -54,6 +72,18 @@ class Persona
 	public function SetFoto($valor)
 	{
 		$this->foto = $valor;
+	}
+	public function SetMail($valor)
+	{
+		$this->mail = $valor;
+	}
+	public function SetClave($valor)
+	{
+		$this->clave = $valor;
+	}
+	public function SetPerfil($valor)
+	{
+		$this->perfil = $valor;
 	}
 //--------------------------------------------------------------------------------//
 //--CONSTRUCTOR
@@ -149,7 +179,19 @@ class Persona
 		return $objetoAccesoDato->RetornarUltimoIdInsertado();
 	
 				
-	}	
+	}
+
+
+	public static function BuscarPersona($usuario)
+	{
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+		$consulta =$objetoAccesoDato->RetornarConsulta("select mail, clave, perfil from persona where mail = :mail");
+		$consulta->bindValue(':mail',$usuario->mail, PDO::PARAM_STR);
+		//echo var_dump($consulta);
+		$consulta->execute();
+		$personaBuscada= $consulta->fetchObject('persona');
+		return $personaBuscada;	
+	}
 //--------------------------------------------------------------------------------//
 
 

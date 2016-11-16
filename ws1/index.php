@@ -54,9 +54,10 @@ $app->post('/login', function ($request, $response, $args) {
     $usuario = json_decode($body);
     
     //Se va a buscar a la base el usuario
-    $exist = false;
+    $personaDb = Persona::BuscarPersona($usuario);
+    
 
-    if($exist){
+    if($usuario->mail == $personaDb->mail){
 
         $ClaveDeEncriptacion = "miClaveDeEncriptacion";
         $token["usuario"] = "usuario";
@@ -78,8 +79,7 @@ $app->post('/login', function ($request, $response, $args) {
     //de decodifca del array al json
     $response = json_encode($ArrayConToken);
 
-    //return $response;
-    echo 'asdfadf';
+    return $response;
 });
 
 $app->get('/usuarios[/]', function ($request, $response, $args) {
