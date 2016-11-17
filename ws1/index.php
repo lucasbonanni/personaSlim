@@ -12,6 +12,7 @@ var_dump(apache_get_version());*/
 require 'vendor/autoload.php';
 require 'clases/AccesoDatos.php';
 require 'clases/Personas.php';
+require 'clases/Productos.php';
 use \Firebase\JWT\JWT;
 
 /**
@@ -132,6 +133,70 @@ $app->delete('/usuario/{id}', function ($request, $response, $args) {
  * This method should be called last. This executes the Slim application
  * and returns the HTTP response to the HTTP client.
  */
+
+/* -----   Productos ------- */
+
+$app->get('/productos[/]', function ($request, $response, $args) {
+    $resultado = [];
+    $resultado = Producto::TraerTodosLosProductos();
+    $response->write(json_encode($resultado));
+    
+    return $response;
+});
+
+$app->get('/productos/{id}[/{name}]', function ($request, $response, $args) {
+    $resultado = [];
+    $resultado = Producto::TraerUnProducto($args['id']);
+    $response->write(json_encode($resultado));
+    return $response;
+});
+
+
+$app->post('/productos[/]', function ($request, $response, $args) {
+    //se parsea a un array
+    $body = $request->getParsedBody();
+
+     //Se parsea de un array a un json y del json a un objecto   
+    $producto = json_decode(json_encode($body));
+    //$body = json_decode($args['id']);
+    $resultado = [];
+    $resultado = Producto::InsertarProducto($producto);
+    //de decodifca del array al json
+    $response->write(json_encode($resultado));
+    //$response->write("Welcome to Slim!");
+    //var_dump($persona->nombre);
+    //var_dump();
+    return $response;
+});
+
+
+$app->put('/productos[/]', function ($request, $response, $args) {
+        //se parsea a un array
+    $body = $request->getParsedBody();
+    //echo var_dump($body);
+     //Se parsea de un array a un json y del json a un objecto   
+    $producto = json_decode(json_encode($body));
+    //echo var_dump($producto);
+    //$body = json_decode($args['id']);
+    $resultado = [];
+    $resultado = Producto::ModificarProducto($producto);
+    //de decodifca del array al json
+    //$response->write(json_encode($resultado));
+    //$response->write("Welcome to Slim!");
+    //var_dump($persona->nombre);
+    //var_dump();
+    $response->write(json_encode($resultado));
+    return $response;
+});
+
+$app->delete('/productos/{id}', function ($request, $response, $args) {
+    $resultado = [];
+    $resultado = Producto::BorrarProducto($args['id']);
+    $response->write(json_encode($resultado));
+    return $response;
+});
+
+
 $app->run();
 
 ?>
