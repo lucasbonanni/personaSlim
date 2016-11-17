@@ -98,7 +98,7 @@ $app->get('/usuario/{id}[/{name}]', function ($request, $response, $args) {
     return $response;
 });
 /* POST: Para crear recursos */
-$app->post('/usuario/{id}', function ($request, $response, $args) {
+$app->post('/usuarios/{id}', function ($request, $response, $args) {
     //se parsea a un array
     $body = $request->getParsedBody();
 
@@ -115,14 +115,14 @@ $app->post('/usuario/{id}', function ($request, $response, $args) {
 });
 
 // /* PUT: Para editar recursos */
-$app->put('/usuario/{id}', function ($request, $response, $args) {
+$app->put('/usuarios/{id}', function ($request, $response, $args) {
     $response->write("Welcome to Slim!");
     var_dump($args);
     return $response;
 });
 
 // /* DELETE: Para eliminar recursos */
-$app->delete('/usuario/{id}', function ($request, $response, $args) {
+$app->delete('/usuarios/{id}', function ($request, $response, $args) {
     $response->write("borrar !", $args->id);
     var_dump($args);
     return $response;
