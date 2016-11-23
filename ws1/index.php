@@ -123,8 +123,8 @@ $app->put('/usuarios/{id}', function ($request, $response, $args) {
 
 // /* DELETE: Para eliminar recursos */
 $app->delete('/usuarios/{id}', function ($request, $response, $args) {
+    Persona::BorrarPersona($args['id']);
     $response->write("borrar !", $args->id);
-    var_dump($args);
     return $response;
 });
 /**
