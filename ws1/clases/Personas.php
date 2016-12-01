@@ -53,6 +53,8 @@ class Persona
 		return $this->perfil;
 	}
 
+
+
 	public function SetId($valor)
 	{
 		$this->id = $valor;
@@ -87,8 +89,9 @@ class Persona
 	}
 //--------------------------------------------------------------------------------//
 //--CONSTRUCTOR
-	public function __construct($dni=NULL)
+	/*public function __construct($dni=NULL)
 	{
+
 		if($dni != NULL){
 			$obj = Persona::TraerUnaPersona($dni);
 			
@@ -97,7 +100,15 @@ class Persona
 			$this->dni = $dni;
 			$this->foto = $obj->foto;
 		}
-	}
+		else{
+			$this->apellido = "";
+			$this->nombre = "";
+			$this->dni = "";
+			$this->foto = "";
+			$this->perfil = "";
+			$this->mail = "";
+		}
+	}*/
 
 //--------------------------------------------------------------------------------//
 //--TOSTRING	
@@ -114,8 +125,8 @@ class Persona
 
 
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-		//$consulta =$objetoAccesoDato->RetornarConsulta("select * from persona where id =:id");
-		$consulta =$objetoAccesoDato->RetornarConsulta("CALL TraerUnaPersona(:id)");
+		$consulta =$objetoAccesoDato->RetornarConsulta("select * from persona where id =:id");
+		//$consulta =$objetoAccesoDato->RetornarConsulta("CALL TraerUnaPersona(:id)");
 		$consulta->bindValue(':id', $idParametro, PDO::PARAM_INT);
 		$consulta->execute();
 		$personaBuscada= $consulta->fetchObject('persona');
@@ -126,8 +137,8 @@ class Persona
 	public static function TraerTodasLasPersonas()
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-		//$consulta =$objetoAccesoDato->RetornarConsulta("select * from persona");
-		$consulta =$objetoAccesoDato->RetornarConsulta("CALL TraerTodasLasPersonas() ");
+		$consulta =$objetoAccesoDato->RetornarConsulta("select * from persona");
+		//$consulta =$objetoAccesoDato->RetornarConsulta("CALL TraerTodasLasPersonas() ");
 		$consulta->execute();			
 		$arrPersonas= $consulta->fetchAll(PDO::FETCH_CLASS, "persona");	
 		return $arrPersonas;
@@ -136,8 +147,8 @@ class Persona
 	public static function BorrarPersona($idParametro)
 	{	
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-		//$consulta =$objetoAccesoDato->RetornarConsulta("delete from persona	WHERE id=:id");	
-		$consulta =$objetoAccesoDato->RetornarConsulta("CALL BorrarPersona(:id)");	
+		$consulta =$objetoAccesoDato->RetornarConsulta("delete from persona	WHERE id=:id");	
+		//$consulta =$objetoAccesoDato->RetornarConsulta("CALL BorrarPersona(:id)");	
 		$consulta->bindValue(':id',$idParametro, PDO::PARAM_INT);		
 		$consulta->execute();
 		return $consulta->rowCount();
@@ -147,18 +158,22 @@ class Persona
 	public static function ModificarPersona($persona)
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			/*$consulta =$objetoAccesoDato->RetornarConsulta("
+			$consulta =$objetoAccesoDato->RetornarConsulta("
 				update persona 
 				set nombre=:nombre,
 				apellido=:apellido,
-				foto=:foto
+				mail=:mail,
+				clave=:clave,
+				perfil=:perfil
 				WHERE id=:id");
-			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();*/ 
-			$consulta =$objetoAccesoDato->RetornarConsulta("CALL ModificarPersona(:id,:nombre,:apellido,:foto)");
+			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+			//$consulta =$objetoAccesoDato->RetornarConsulta("CALL ModificarPersona(:id,:nombre,:apellido,:foto)");
 			$consulta->bindValue(':id',$persona->id, PDO::PARAM_INT);
 			$consulta->bindValue(':nombre',$persona->nombre, PDO::PARAM_STR);
 			$consulta->bindValue(':apellido', $persona->apellido, PDO::PARAM_STR);
-			$consulta->bindValue(':foto', $persona->foto, PDO::PARAM_STR);
+			$consulta->bindValue(':mail', $persona->mail, PDO::PARAM_STR);
+			$consulta->bindValue(':clave', $persona->clave, PDO::PARAM_STR);
+			$consulta->bindValue(':perfil', $persona->perfil, PDO::PARAM_STR);
 			return $consulta->execute();
 	}
 
@@ -169,12 +184,13 @@ class Persona
 	public static function InsertarPersona($persona)
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-		//$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into persona (nombre,apellido,dni,foto)values(:nombre,:apellido,:dni,:foto)");
-		$consulta =$objetoAccesoDato->RetornarConsulta("CALL InsertarPersona (:nombre,:apellido,:dni,:foto)");
+		$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into persona (nombre,apellido,mail,clave,perfil)values(:nombre,:apellido,:mail,:clave,:perfil)");
+		//$consulta =$objetoAccesoDato->RetornarConsulta("CALL InsertarPersona (:nombre,:apellido,:dni,:foto)");
 		$consulta->bindValue(':nombre',$persona->nombre, PDO::PARAM_STR);
 		$consulta->bindValue(':apellido', $persona->apellido, PDO::PARAM_STR);
-		$consulta->bindValue(':dni', $persona->dni, PDO::PARAM_STR);
-		$consulta->bindValue(':foto', $persona->foto, PDO::PARAM_STR);
+		$consulta->bindValue(':mail', $persona->mail, PDO::PARAM_STR);
+		$consulta->bindValue(':clave', $persona->clave, PDO::PARAM_STR);
+		$consulta->bindValue(':perfil', $persona->perfil, PDO::PARAM_STR);
 		$consulta->execute();		
 		return $objetoAccesoDato->RetornarUltimoIdInsertado();
 	
@@ -185,7 +201,7 @@ class Persona
 	public static function BuscarPersona($usuario)
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-		$consulta =$objetoAccesoDato->RetornarConsulta("select mail, clave, perfil from persona where mail = :mail");
+		$consulta =$objetoAccesoDato->RetornarConsulta("select mail, clave, perfil, apellido, nombre from persona where mail = :mail");
 		$consulta->bindValue(':mail',$usuario->mail, PDO::PARAM_STR);
 		//echo var_dump($consulta);
 		$consulta->execute();

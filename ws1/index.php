@@ -25,6 +25,7 @@ use \Firebase\JWT\JWT;
  */
 $app = new Slim\App();
 
+date_default_timezone_set ("America/Argentina/Buenos_Aires");
 /**
  * Step 3: Define the Slim application routes
  *
@@ -46,25 +47,63 @@ $app->get('/', function ($request, $response, $args) {
     return $response;
 });
 
+/*
+// Allow from any origin
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: *");
+}
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        //header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");         
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        //header("Access-Control-Allow-Headers: '*'");
+
+}
+
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', 'localhost')
+            ->withHeader('Access-Control-Allow-Headers', '*')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});*/
+
+
+/*
+$app->map('/:x+', function($x) {
+    http_response_code(200);
+})->via('OPTIONS');
+*/
+
+
 /* POST: Para crear recursos */
 $app->post('/login', function ($request, $response, $args) {
     $token = array();
+    $ArrayConToken = array();
 
     $body = $request->getBody();
      
     $usuario = json_decode($body);
     
+    $personaDb = new Persona();
+    
     //Se va a buscar a la base el usuario
     $personaDb = Persona::BuscarPersona($usuario);
     
-
+    
     if($usuario->mail == $personaDb->mail){
 
         $ClaveDeEncriptacion = "miClaveDeEncriptacion";
-        $token["usuario"] = "usuario";
-        $token["perfil"] = "admin";
+        $token["mail"] = $personaDb->mail;
+        $token["apellido"] = $personaDb->apellido;
+        $token["nombre"] = $personaDb->nombre;
+        $token["perfil"] = $personaDb->perfil;
         $token["iat"] = time();
-        $token["exp"] = time() +20;
+        $token["exp"] = time() +25;
+
 
 
         $jwt = JWT::encode($token, $ClaveDeEncriptacion);
@@ -75,11 +114,14 @@ $app->post('/login', function ($request, $response, $args) {
     else
     {
         $ArrayConToken["MiTokenGeneradoEnPHP"] = false;
+        //$ArrayConToken["usuario"] = var_dump($usuario);
+        //$ArrayConToken["persona"] = var_dump($personaDb);
     }
 
     //de decodifca del array al json
     $response = json_encode($ArrayConToken);
 
+    //$response = var_dump($personaDb);
     return $response;
 });
 
@@ -91,33 +133,43 @@ $app->get('/usuarios[/]', function ($request, $response, $args) {
     return $response;
 });
 
-$app->get('/usuario/{id}[/{name}]', function ($request, $response, $args) {
+$app->get('/usuarios/{id}[/{name}]', function ($request, $response, $args) {
     $resultado = [];
     $resultado = Persona::TraerUnaPersona($args['id']);
     $response->write(json_encode($resultado));
     return $response;
 });
 /* POST: Para crear recursos */
-$app->post('/usuarios/{id}', function ($request, $response, $args) {
+$app->post('/usuarios', function ($request, $response, $args) {
     //se parsea a un array
     $body = $request->getParsedBody();
 
      //Se parsea de un array a un json y del json a un objecto   
     $persona = json_decode(json_encode($body));
     //$body = json_decode($args['id']);
-
+    Persona::InsertarPersona($persona);
     //de decodifca del array al json
-    $response = json_encode($body);
+    $response ->write(json_encode($persona));
     //$response->write("Welcome to Slim!");
-    var_dump($persona->nombre);
+    //var_dump($persona->nombre);
     //var_dump();
     return $response;
 });
 
 // /* PUT: Para editar recursos */
-$app->put('/usuarios/{id}', function ($request, $response, $args) {
-    $response->write("Welcome to Slim!");
-    var_dump($args);
+$app->put('/usuarios[/{id}]', function ($request, $response, $args) {
+    //$response->write("Welcome to Slim!");
+    //var_dump($args);
+
+    //se parsea a un array
+    $body = $request->getParsedBody();
+
+     //Se parsea de un array a un json y del json a un objecto   
+    $persona = json_decode(json_encode($body));
+
+    Persona::ModificarPersona($persona);
+    //de decodifca del array al json
+    $response ->write(json_encode($persona));
     return $response;
 });
 
@@ -196,13 +248,7 @@ $app->delete('/productos/{id}', function ($request, $response, $args) {
     return $response;
 });
 
-$app->add(function ($req, $res, $next) {
-    $response = $next($req, $res);
-    return $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:9000')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-});
+
 
 
 
