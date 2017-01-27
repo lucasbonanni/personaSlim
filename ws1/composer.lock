@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "87baa8bee842bb0c2ee495a4fca090d3",
-    "content-hash": "3fbb6a9220b05976a92414f5541c2c86",
+    "hash": "192867bd67f85d39931e4447c962b518",
+    "content-hash": "fb492f9dee290d481bbfb86faeba0a70",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -76,6 +76,46 @@
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
             "time": "2016-07-18 04:51:16"
+        },
+        {
+            "name": "lichtner/fluentpdo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/envms/fluentpdo.git",
+                "reference": "c50768561a9470f8c840cdaf409bac9d5c5d054d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/envms/fluentpdo/zipball/c50768561a9470f8c840cdaf409bac9d5c5d054d",
+                "reference": "c50768561a9470f8c840cdaf409bac9d5c5d054d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "FluentPDO/FluentPDO.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0",
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Marek Lichtner",
+                    "homepage": "http://licht.sk/"
+                }
+            ],
+            "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
+            "homepage": "https://github.com/fpdo/fluentpdo",
+            "keywords": [
+                "database",
+                "dbal",
+                "pdo"
+            ],
+            "time": "2016-10-06 11:45:37"
         },
         {
             "name": "nikic/fast-route",
@@ -168,16 +208,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
             "require": {
@@ -205,6 +245,7 @@
                 }
             ],
             "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
                 "http",
                 "http-message",
@@ -213,7 +254,7 @@
                 "request",
                 "response"
             ],
-            "time": "2015-05-04 20:22:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "slim/slim",
@@ -285,7 +326,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "lichtner/fluentpdo": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -74,57 +74,6 @@
         ]
     },
     {
-        "name": "psr/http-message",
-        "version": "1.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-fig/http-message.git",
-            "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-            "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2015-05-04 20:22:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interface for HTTP messages",
-        "keywords": [
-            "http",
-            "http-message",
-            "psr",
-            "psr-7",
-            "request",
-            "response"
-        ]
-    },
-    {
         "name": "pimple/pimple",
         "version": "v3.0.2",
         "version_normalized": "3.0.2.0",
@@ -284,5 +233,99 @@
         ],
         "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
         "homepage": "https://github.com/firebase/php-jwt"
+    },
+    {
+        "name": "psr/http-message",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/http-message.git",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2016-08-06 14:39:51",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\Http\\Message\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interface for HTTP messages",
+        "homepage": "https://github.com/php-fig/http-message",
+        "keywords": [
+            "http",
+            "http-message",
+            "psr",
+            "psr-7",
+            "request",
+            "response"
+        ]
+    },
+    {
+        "name": "lichtner/fluentpdo",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/envms/fluentpdo.git",
+            "reference": "c50768561a9470f8c840cdaf409bac9d5c5d054d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/envms/fluentpdo/zipball/c50768561a9470f8c840cdaf409bac9d5c5d054d",
+            "reference": "c50768561a9470f8c840cdaf409bac9d5c5d054d",
+            "shasum": ""
+        },
+        "time": "2016-10-06 11:45:37",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "FluentPDO/FluentPDO.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0",
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Marek Lichtner",
+                "homepage": "http://licht.sk/"
+            }
+        ],
+        "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
+        "homepage": "https://github.com/fpdo/fluentpdo",
+        "keywords": [
+            "database",
+            "dbal",
+            "pdo"
+        ]
     }
 ]

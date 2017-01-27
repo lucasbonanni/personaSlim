@@ -2,12 +2,13 @@
     "name": "vendor/ws",
     "authors": [
         {
-            "name": "mario",
-            "email": "mariorampi@gmail.com"
+            "name": "Lucas",
+            "email": "tecnicayuda@gmail.com"
         }
     ],
     "require": {
         "slim/slim": "3",
-        "firebase/php-jwt": "^4.0"
+        "firebase/php-jwt": "^4.0",
+        "lichtner/fluentpdo": "dev-master"
     }
 }
