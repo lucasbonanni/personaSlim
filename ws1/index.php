@@ -13,6 +13,10 @@ require 'vendor/autoload.php';
 require 'clases/AccesoDatos.php';
 require 'clases/Personas.php';
 require 'clases/Productos.php';
+//require 'clases/Product.php';
+require 'routes/ProductRoutes.php';
+require 'routes/BandRoutes.php';
+require 'routes/CategoriesRoutes.php';
 use \Firebase\JWT\JWT;
 
 /**
@@ -23,8 +27,19 @@ use \Firebase\JWT\JWT;
  * your Slim application now by passing an associative array
  * of setting names and values into the application constructor.
  */
-$app = new Slim\App();
 
+/* Enable this setting to debug and show errors
+    
+ $config = [
+    'settings' => [
+        'displayErrorDetails' => true,
+    ],
+];
+
+*/
+$app = new Slim\App($config);
+
+/*  Default time zone */
 date_default_timezone_set ("America/Argentina/Buenos_Aires");
 /**
  * Step 3: Define the Slim application routes
@@ -34,13 +49,16 @@ date_default_timezone_set ("America/Argentina/Buenos_Aires");
  * argument for `Slim::get`, `Slim::post`, `Slim::put`, `Slim::patch`, and `Slim::delete`
  * is an anonymous function.
  */
-/**
-* GET: Para consultar y leer recursos
-* POST: Para crear recursos
-* PUT: Para editar recursos
-* DELETE: Para eliminar recursos
-*
-*  GET: Para consultar y leer recursos */
+
+
+$ProductRoutes = new ProductRoutes($app);
+$ProductRoutes->createRoutes();
+
+$BandRoutes = new BandRoutes($app);
+$BandRoutes->createRoutes();
+
+$categoriesRoutes = new CategoriesRoutes($app);
+$categoriesRoutes->createRoutes();
 
 $app->get('/', function ($request, $response, $args) {
     $response->write("Welcome to Slim!");
@@ -56,7 +74,7 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-        //header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");         
+        //header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
         //header("Access-Control-Allow-Headers: '*'");
@@ -85,15 +103,15 @@ $app->post('/login', function ($request, $response, $args) {
     $ArrayConToken = array();
 
     $body = $request->getBody();
-     
+
     $usuario = json_decode($body);
-    
+
     $personaDb = new Persona();
-    
+
     //Se va a buscar a la base el usuario
     $personaDb = Persona::BuscarPersona($usuario);
-    
-    
+
+
     if($usuario->mail == $personaDb->mail){
 
         $ClaveDeEncriptacion = "miClaveDeEncriptacion";
@@ -108,7 +126,7 @@ $app->post('/login', function ($request, $response, $args) {
 
         $jwt = JWT::encode($token, $ClaveDeEncriptacion);
 
-        
+
         $ArrayConToken["MiTokenGeneradoEnPHP"] = $jwt;
     }
     else
@@ -125,125 +143,17 @@ $app->post('/login', function ($request, $response, $args) {
     return $response;
 });
 
-$app->get('/usuarios[/]', function ($request, $response, $args) {
+
+
+/*
+    Ejemplo para ordenar por parametro
+*/
+$app->get('/buscar', function ($request, $response, $args) {
     $resultado = [];
-    $resultado = Persona::TraerTodasLasPersonas();
-    $response->write(json_encode($resultado));
-    
-    return $response;
-});
-
-$app->get('/usuarios/{id}[/{name}]', function ($request, $response, $args) {
-    $resultado = [];
-    $resultado = Persona::TraerUnaPersona($args['id']);
-    $response->write(json_encode($resultado));
-    return $response;
-});
-/* POST: Para crear recursos */
-$app->post('/usuarios', function ($request, $response, $args) {
-    //se parsea a un array
-    $body = $request->getParsedBody();
-
-     //Se parsea de un array a un json y del json a un objecto   
-    $persona = json_decode(json_encode($body));
-    //$body = json_decode($args['id']);
-    Persona::InsertarPersona($persona);
-    //de decodifca del array al json
-    $response ->write(json_encode($persona));
-    //$response->write("Welcome to Slim!");
-    //var_dump($persona->nombre);
-    //var_dump();
-    return $response;
-});
-
-// /* PUT: Para editar recursos */
-$app->put('/usuarios[/{id}]', function ($request, $response, $args) {
-    //$response->write("Welcome to Slim!");
-    //var_dump($args);
-
-    //se parsea a un array
-    $body = $request->getParsedBody();
-
-     //Se parsea de un array a un json y del json a un objecto   
-    $persona = json_decode(json_encode($body));
-
-    Persona::ModificarPersona($persona);
-    //de decodifca del array al json
-    $response ->write(json_encode($persona));
-    return $response;
-});
-
-// /* DELETE: Para eliminar recursos */
-$app->delete('/usuarios/{id}', function ($request, $response, $args) {
-    Persona::BorrarPersona($args['id']);
-    $response->write("borrar !", $args->id);
-    return $response;
-});
-/**
- * Step 4: Run the Slim application
- *
- * This method should be called last. This executes the Slim application
- * and returns the HTTP response to the HTTP client.
- */
-
-/* -----   Productos ------- */
-
-$app->get('/productos[/]', function ($request, $response, $args) {
-    $resultado = [];
-    $resultado = Producto::TraerTodosLosProductos();
-    $response->write(json_encode($resultado));
-    
-    return $response;
-});
-
-$app->get('/productos/{id}[/{name}]', function ($request, $response, $args) {
-    $resultado = [];
-    $resultado = Producto::TraerUnProducto($args['id']);
-    $response->write(json_encode($resultado));
-    return $response;
-});
-
-
-$app->post('/productos[/]', function ($request, $response, $args) {
-    //se parsea a un array
-    $body = $request->getParsedBody();
-
-     //Se parsea de un array a un json y del json a un objecto   
-    $producto = json_decode(json_encode($body));
-    //$body = json_decode($args['id']);
-    $resultado = [];
-    $resultado = Producto::InsertarProducto($producto);
-    //de decodifca del array al json
-    $response->write(json_encode($resultado));
-    //$response->write("Welcome to Slim!");
-    //var_dump($persona->nombre);
-    //var_dump();
-    return $response;
-});
-
-
-$app->put('/productos[/]', function ($request, $response, $args) {
-        //se parsea a un array
-    $body = $request->getParsedBody();
-    //echo var_dump($body);
-     //Se parsea de un array a un json y del json a un objecto   
-    $producto = json_decode(json_encode($body));
-    //echo var_dump($producto);
-    //$body = json_decode($args['id']);
-    $resultado = [];
-    $resultado = Producto::ModificarProducto($producto);
-    //de decodifca del array al json
-    //$response->write(json_encode($resultado));
-    //$response->write("Welcome to Slim!");
-    //var_dump($persona->nombre);
-    //var_dump();
-    $response->write(json_encode($resultado));
-    return $response;
-});
-
-$app->delete('/productos/{id}', function ($request, $response, $args) {
-    $resultado = [];
-    $resultado = Producto::BorrarProducto($args['id']);
+    $key = 'orderBy';
+    $order = $request->getParam('orderBy');
+    $ordena = explode(',',$order,0);
+    $resultado = Producto::BuscarProductos($ordena);
     $response->write(json_encode($resultado));
     return $response;
 });
