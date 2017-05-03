@@ -17,6 +17,7 @@ require 'clases/Productos.php';
 require 'routes/ProductRoutes.php';
 require 'routes/BandRoutes.php';
 require 'routes/CategoriesRoutes.php';
+require 'routes/FileUploadRoute.php';
 use \Firebase\JWT\JWT;
 
 /**
@@ -28,7 +29,7 @@ use \Firebase\JWT\JWT;
  * of setting names and values into the application constructor.
  */
 
-/* Enable this setting to debug and show errors
+ //Enable this setting to debug and show errors
     
  $config = [
     'settings' => [
@@ -36,7 +37,7 @@ use \Firebase\JWT\JWT;
     ],
 ];
 
-*/
+
 $app = new Slim\App($config);
 
 /*  Default time zone */
@@ -59,6 +60,9 @@ $BandRoutes->createRoutes();
 
 $categoriesRoutes = new CategoriesRoutes($app);
 $categoriesRoutes->createRoutes();
+
+$fileUploadRoute = new FileUploadRoute($app);
+$fileUploadRoute->createRoutes();
 
 $app->get('/', function ($request, $response, $args) {
     $response->write("Welcome to Slim!");
