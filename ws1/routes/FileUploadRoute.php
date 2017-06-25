@@ -16,6 +16,8 @@ class FileUploadRoute{
         });
         
         $this->app->post('/images[/]', function($request, $response, $args){
+        $host = "http://".$_SERVER['HTTP_HOST'];
+        $dirName = dirname($_SERVER['PHP_SELF']). '/..';
            if (isset($_FILES)){
                 $imgs = array();
             	$file_ary = array();
@@ -37,10 +39,11 @@ class FileUploadRoute{
                         $dir = realpath(__DIR__ . '/..');
                        $uploadPath = dirname( $dir ). DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $name . @'.' .pathinfo($file_ary[$i][ 'name' ], PATHINFO_EXTENSION);
                        if(move_uploaded_file($tempPath, $uploadPath) === true){
-                           $imgs[] = array('url' => '/uploads/' . $name, 'name' => $file_ary[$i][ 'name' ]);
+                        //    $imgs[] = array('url' =>@ $host . $dirName . '/uploads/' . $file_ary[$i][ 'name' ]);
+                              $imgs[] = array(@ $host . $dirName . '/uploads/' . $name . @'.' .pathinfo($file_ary[$i][ 'name' ], PATHINFO_EXTENSION));
                         }
             }
-               return $response;
+               return $response->write(json_encode($imgs, JSON_UNESCAPED_SLASHES));
            }
             else{
                 $newResponse = $response->withStatus(500);
