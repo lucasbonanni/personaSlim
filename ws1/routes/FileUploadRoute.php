@@ -19,9 +19,9 @@ class FileUploadRoute{
         $host = "http://".$_SERVER['HTTP_HOST'];
         $dirName = dirname($_SERVER['PHP_SELF']). '/..';
            if (isset($_FILES)){
-                $imgs = array();
+                $imgs = '';
             	$file_ary = array();
-            	$file_post = $_FILES['images'];
+            	//$file_post = $_FILES['images'];
                 $cnt = count($_FILES);
                 $file_keys = array_keys($_FILES);
                 $i=0;
@@ -40,10 +40,10 @@ class FileUploadRoute{
                        $uploadPath = dirname( $dir ). DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $name . @'.' .pathinfo($file_ary[$i][ 'name' ], PATHINFO_EXTENSION);
                        if(move_uploaded_file($tempPath, $uploadPath) === true){
                         //    $imgs[] = array('url' =>@ $host . $dirName . '/uploads/' . $file_ary[$i][ 'name' ]);
-                              $imgs[] = array(@ $host . $dirName . '/uploads/' . $name . @'.' .pathinfo($file_ary[$i][ 'name' ], PATHINFO_EXTENSION));
+                              $imgs =  @ $host . $dirName . '/uploads/' . $name . @'.' .pathinfo($file_ary[$i][ 'name' ], PATHINFO_EXTENSION);
                         }
             }
-               return $response->write(json_encode($imgs, JSON_UNESCAPED_SLASHES));
+               return $response->write($imgs);
            }
             else{
                 $newResponse = $response->withStatus(500);
