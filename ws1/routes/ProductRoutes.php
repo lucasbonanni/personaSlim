@@ -22,13 +22,24 @@ class ProductRoutes
                     case 'GET':
                         $id = $args['id'];
                         $product = product::GetProductById($id);
-                        return $response->write(json_encode($product));
+                        return $response->write(json_encode($product,JSON_UNESCAPED_SLASHES));
                         break;
                     case 'PUT':
-                        # code...
+                        $id = $args['id'];
+                        $body = $request->getParsedBody();
+                        //Se parsea de un array a un json y del json a un objecto   
+                        // var_dump($body);
+                        $product = json_decode(json_encode($body));
+                        // var_dump($product);
+                        $product = product::ProductUpdate($id,$product);
+                        $body = $response->getBody();
+                        $body->write(json_encode($product,JSON_UNESCAPED_SLASHES));
+                        return $response;
                         break;
                     case 'DELETE':
-                        # code...
+                        $id = $args['id'];
+                        product::ProductDelete($id);
+                        return $response;
                         break;
 
                     default:
@@ -41,14 +52,22 @@ class ProductRoutes
       $this->app->get('/products[/]', function ($request, $response, $args) {
           $resultado = [];
           $resultado = product::GetAllProducts();
-          $response->write(json_encode($resultado));
+          $response->write(json_encode($resultado,JSON_UNESCAPED_SLASHES));
 
           return $response;
       });
 
       $this->app->post('/products[/]', function ($request, $response, $args)
       {
-          # code...
+          $body = $request->getParsedBody();
+            //Se parsea de un array a un json y del json a un objecto   
+            // var_dump($body);
+            $product = json_decode(json_encode($body));
+            // var_dump($product);
+            $product = product::ProductCreate($product);
+            $body = $response->getBody();
+            $body->write(json_encode($product,JSON_UNESCAPED_SLASHES));
+            return $response;
       });
   }
 
