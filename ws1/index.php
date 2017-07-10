@@ -11,9 +11,12 @@ var_dump(apache_get_version());*/
  */
 require 'vendor/autoload.php';
 require 'clases/AccesoDatos.php';
-require 'clases/Personas.php';
-require 'clases/Productos.php';
+// require 'clases/Personas.php';
+// require 'clases/Productos.php';
+// require 'clases/Order.php';
 //require 'clases/Product.php';
+require 'routes/OrderDetailRoutes.php';
+require 'routes/OrdersRoutes.php';
 require 'routes/ProductRoutes.php';
 require 'routes/BandRoutes.php';
 require 'routes/CategoriesRoutes.php';
@@ -51,6 +54,11 @@ date_default_timezone_set ("America/Argentina/Buenos_Aires");
  * is an anonymous function.
  */
 
+$OrderDetailRoutes = new OrderDetailRoutes($app);
+$OrderDetailRoutes->createRoutes();
+
+$OrdersRoutes = new OrdersRoutes($app);
+$OrdersRoutes->createRoutes();
 
 $ProductRoutes = new ProductRoutes($app);
 $ProductRoutes->createRoutes();
