@@ -28,6 +28,15 @@ class BaseEntity
         return $arrPersonas;
     }
 
+    public static function GetAllRelated($id, $classType, $query){
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+		$consulta =$objetoAccesoDato->RetornarConsulta($query);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+		$consulta->execute();
+        $arrPersonas= $consulta->fetchAll(PDO::FETCH_CLASS, $classType);
+        return $arrPersonas;
+    }
+
     public static function Update($id,$entity,$classType,$query)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
