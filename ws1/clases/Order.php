@@ -39,7 +39,6 @@ class order extends BaseEntity
             update orders
             set userId=:userId,
             totalPrice=:totalPrice,
-            detailId=:detailId,
             date=:date,
             state =:state,
             userName =:userName,
@@ -49,7 +48,6 @@ class order extends BaseEntity
         $consulta->bindValue(':id',$id, PDO::PARAM_INT);
         $consulta->bindValue(':userId',$order->userId, PDO::PARAM_INT);
         $consulta->bindValue(':totalPrice',$order->totalPrice, PDO::PARAM_INT);
-        $consulta->bindValue(':detailId', $order->detailId, PDO::PARAM_INT);
         $consulta->bindValue(':date', $order->date, PDO::PARAM_STR);
         $consulta->bindValue(':state',$order->state, PDO::PARAM_STR);
         $consulta->bindValue(':userName', $order->userName, PDO::PARAM_STR);
@@ -62,19 +60,18 @@ class order extends BaseEntity
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta= $objetoAccesoDato->RetornarConsulta("
             insert into orders
-             (userId, totalPrice, detailId,date,state,userName,userStreet)
-            VALUES (:userId, :totalPrice, :detailId,:date,:state,:userName,:userStreet)
+             (userId, totalPrice, date,state,userName,userStreet)
+            VALUES (:userId, :totalPrice, :date,:state,:userName,:userStreet)
         
         ");
         $consulta->bindValue(':userId',$order->userId, PDO::PARAM_INT);
         $consulta->bindValue(':totalPrice',$order->totalPrice, PDO::PARAM_INT);
-        $consulta->bindValue(':detailId', $order->detailId, PDO::PARAM_INT);
         $consulta->bindValue(':date', $order->date, PDO::PARAM_STR);
         $consulta->bindValue(':state',$order->state, PDO::PARAM_STR);
         $consulta->bindValue(':userName', $order->userName, PDO::PARAM_STR);
         $consulta->bindValue(':userStreet', $order->userStreet, PDO::PARAM_STR);
         $consulta->execute();
-        $order->id = $consulta->RetornarUltimoIdInsertado();
+        $order->id = $objetoAccesoDato->RetornarUltimoIdInsertado();
         return $order;
     }
     
