@@ -48,7 +48,7 @@ class OrderDetail extends BaseEntity
             quantity=:quantity,
             price=:price,
             type =:type,
-            orderId =:orderId,
+            orderId =:orderId
             WHERE id =:id");
         //$consulta =$objetoAccesoDato->RetornarConsulta("CALL Modificarproducto(:id,:nombre,:apellido,:foto)");
         $consulta->bindValue(':id',$id, PDO::PARAM_INT);
@@ -59,7 +59,7 @@ class OrderDetail extends BaseEntity
         $consulta->bindValue(':quantity',$product->quantity, PDO::PARAM_INT);
         $consulta->bindValue(':type', $product->type, PDO::PARAM_STR);
         $consulta->bindValue(':orderId', $product->orderId, PDO::PARAM_STR);
-        $consulta->execute();
+        $consulta->execute(); 
         return $product;
     }
 
@@ -67,9 +67,8 @@ class OrderDetail extends BaseEntity
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta= $objetoAccesoDato->RetornarConsulta("
             insert into order_detail
-        $consulta->bindValue(':band', $product->band, PDO::PARAM_STR);
              (name, short_description, description,quantity,price,type,orderId)
-            VALUES (:name, :short_description, :description,:quantity,:price,:band,:type,:orderId)
+            VALUES (:name, :short_description, :description,:quantity,:price,:type,:orderId)
         
         ");
         $consulta->bindValue(':name',$product->name, PDO::PARAM_STR);
@@ -80,7 +79,7 @@ class OrderDetail extends BaseEntity
         $consulta->bindValue(':type', $product->type, PDO::PARAM_STR);
         $consulta->bindValue(':orderId', $product->orderId, PDO::PARAM_STR);
         $consulta->execute();
-        // $product->id = $consulta->RetornarUltimoIdInsertado();
+        $product->id = $consulta->RetornarUltimoIdInsertado();
         return $product;
     }
     
