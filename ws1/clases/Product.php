@@ -86,7 +86,7 @@ class product extends BaseEntity
         $consulta->bindValue(':image2', $product->image2, PDO::PARAM_STR);
         $consulta->bindValue(':image3', $product->image3, PDO::PARAM_STR);
         $consulta->execute();
-        // $product->id = $consulta->RetornarUltimoIdInsertado();
+        $product->id = $objetoAccesoDato->RetornarUltimoIdInsertado();
         return $product;
     }
     

@@ -79,7 +79,7 @@ class OrderDetail extends BaseEntity
         $consulta->bindValue(':type', $product->type, PDO::PARAM_STR);
         $consulta->bindValue(':orderId', $product->orderId, PDO::PARAM_STR);
         $consulta->execute();
-        $product->id = $consulta->RetornarUltimoIdInsertado();
+        $product->id = $objetoAccesoDato->RetornarUltimoIdInsertado();
         return $product;
     }
     
