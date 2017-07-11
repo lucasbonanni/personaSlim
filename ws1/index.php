@@ -15,6 +15,7 @@ require 'clases/AccesoDatos.php';
 // require 'clases/Productos.php';
 // require 'clases/Order.php';
 //require 'clases/Product.php';
+require 'routes/ShopRoutes.php';
 require 'routes/OrderDetailRoutes.php';
 require 'routes/OrdersRoutes.php';
 require 'routes/ProductRoutes.php';
@@ -53,6 +54,9 @@ date_default_timezone_set ("America/Argentina/Buenos_Aires");
  * argument for `Slim::get`, `Slim::post`, `Slim::put`, `Slim::patch`, and `Slim::delete`
  * is an anonymous function.
  */
+
+ $ShopRoutes = new ShopRoutes($app);
+$ShopRoutes->createRoutes();
 
 $OrderDetailRoutes = new OrderDetailRoutes($app);
 $OrderDetailRoutes->createRoutes();
