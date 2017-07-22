@@ -58,6 +58,17 @@ class UserRoutes
           return $response;
       });
 
+
+        $this->app->get('/users/{profile}/{shopId}', function ($request, $response, $args) {
+          $resultado = [];
+          $profile = $args['profile'];
+          $shopId = $args['shopId'];
+          $resultado = User::GetByProfileAndShop($shopId,$profile);
+          $response->write(json_encode($resultado,JSON_UNESCAPED_SLASHES));
+
+          return $response;
+      });
+
       $this->app->post('/users[/]', function ($request, $response, $args)
       {
           $body = $request->getParsedBody();
@@ -71,6 +82,11 @@ class UserRoutes
             return $response;
       });
   }
+
+  	public static function Find($usuario)
+	{
+        return User::FindUser($usuario);
+    }
 
 }
 

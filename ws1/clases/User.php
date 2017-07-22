@@ -37,6 +37,17 @@ class User extends BaseEntity {
         }
     }
 
+    public static function GetByProfileAndShop($shopId,$profile)
+    {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+            $query = "SELECT * FROM users WHERE profile = :profile and shopId = :shopId";
+            $consulta =$objetoAccesoDato->RetornarConsulta($query);
+            $consulta->bindValue(':profile', $profile, PDO::PARAM_STR);
+            $consulta->bindValue(':shopId', $shopId, PDO::PARAM_INT);
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_CLASS, 'User');
+    }
+
     public static function UserDelete($id)
     {
         $query = "DELETE FROM users WHERE id =:id";
@@ -62,7 +73,7 @@ class User extends BaseEntity {
         $consulta->bindValue(':password', $band->password, PDO::PARAM_STR);
         $consulta->bindValue(':profile', $band->profile, PDO::PARAM_STR);
         $consulta->bindValue(':enabled', $band->enabled, PDO::PARAM_STR);
-        $consulta->bindValue(':shopId', $band->shopId, PDO::PARAM_STR);
+        $consulta->bindValue(':shopId', $band->shopId, PDO::PARAM_INT);
         $consulta->execute();
         return $band;
     }
@@ -78,13 +89,25 @@ class User extends BaseEntity {
         $consulta->bindValue(':name',$product->name, PDO::PARAM_STR);
         $consulta->bindValue(':email',$product->email, PDO::PARAM_STR);
         $consulta->bindValue(':password', $product->password, PDO::PARAM_STR);
-        $consulta->bindValue(':profile',$product->profile, PDO::PARAM_INT);
-        $consulta->bindValue(':enabled', $product->enabled, PDO::PARAM_INT);
-        $consulta->bindValue(':shopId', $product->shopId, PDO::PARAM_STR);
+        $consulta->bindValue(':profile',$product->profile, PDO::PARAM_STR);
+        $consulta->bindValue(':enabled', $product->enabled, PDO::PARAM_STR);
+        $consulta->bindValue(':shopId', $product->shopId, PDO::PARAM_INT);
         $consulta->execute();
         $product->id = $objetoAccesoDato->RetornarUltimoIdInsertado();
         return $product;
     }
+
+    
+	public static function FindUser($usuario)
+	{
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+		$consulta =$objetoAccesoDato->RetornarConsulta("select name, email, password, profile, enabled,shopId from users where email = :email");
+		$consulta->bindValue(':email',$usuario->email, PDO::PARAM_STR);
+		//echo var_dump($consulta);
+		$consulta->execute();
+		$personaBuscada= $consulta->fetchObject('User');
+		return $personaBuscada;	
+	}
     
 }
 
