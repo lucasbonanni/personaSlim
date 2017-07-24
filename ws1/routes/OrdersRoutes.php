@@ -57,6 +57,13 @@ class OrdersRoutes
           return $response;
       });
 
+      $this->app->get('/orders/amount-by-month/{some}', function ($request, $response, $args) {
+          $resultado = [];
+          $resultado = Order::GetTotalAmountByMonth();
+          $response->write(json_encode($resultado,JSON_UNESCAPED_SLASHES));
+          return $response;
+      });
+
       $this->app->post('/orders[/]', function ($request, $response, $args)
       {
           $body = $request->getParsedBody();

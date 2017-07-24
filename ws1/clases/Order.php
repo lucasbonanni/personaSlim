@@ -75,7 +75,15 @@ class order extends BaseEntity
         return $order;
     }
     
-    
+    public static function GetTotalAmountByMonth(){
+        
+        $objetoAccesoDatos = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDatos->RetornarConsulta(
+        "select DATE_FORMAT(date,'%M') as month, sum(totalPrice) as totalamount from orders group by  month(date), year(date)");
+        $consulta->execute();
+        $lista = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        return $lista;
+    }
 
 }
 
