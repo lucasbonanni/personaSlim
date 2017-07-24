@@ -101,7 +101,7 @@ class User extends BaseEntity {
 	public static function FindUser($usuario)
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-		$consulta =$objetoAccesoDato->RetornarConsulta("select name, email, password, profile, enabled,shopId from users where email = :email");
+		$consulta =$objetoAccesoDato->RetornarConsulta("select id, name, email, password, profile, enabled,shopId from users where email = :email");
 		$consulta->bindValue(':email',$usuario->email, PDO::PARAM_STR);
 		//echo var_dump($consulta);
 		$consulta->execute();

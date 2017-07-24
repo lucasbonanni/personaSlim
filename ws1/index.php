@@ -148,6 +148,7 @@ $app->post('/login', function ($request, $response, $args) {
         $token["email"] = $personaDb->email;
         // $token["apellido"] = $personaDb->apellido;
         $token["name"] = $personaDb->name;
+        $token["id"] = $personaDb->id;
         $token["profile"] = $personaDb->profile;
         $token["iat"] = time();
         $token["exp"] = time() +10000;
